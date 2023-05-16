@@ -20,14 +20,14 @@ export class ProductService {
 
     allProduct = allProduct.map((data) => ({
       ...data,
-      category: allCategory.filter(
-        (category) => category._id === data.category._path.segments[1],
+      category: allCategory?.filter(
+        (category) => category._id === data?.category?._path.segments[1],
       )[0],
-      tags: data.tags
-        .map((tag) => {
-          return allTag.filter((value) => value._id === tag._path.segments[1]);
+      tags: data?.tags
+        ?.map((tag) => {
+          return allTag.filter((value) => value._id === tag?._path.segments[1]);
         })
-        .flat(),
+        ?.flat(),
     }));
     return allProduct;
   }
