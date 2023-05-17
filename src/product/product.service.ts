@@ -1,8 +1,12 @@
 import { FirebaseAdmin, InjectFirebaseAdmin } from 'nestjs-firebase';
+import { CategoryService } from 'src/category/category.service';
+import { TagService } from 'src/tag/tag.service';
 
 export class ProductService {
   constructor(
     @InjectFirebaseAdmin() private readonly firebase: FirebaseAdmin,
+    private categoryService: CategoryService,
+    private tagService: TagService,
   ) {}
 
   async index({ query, limit, page, category, tags }) {
@@ -13,13 +17,8 @@ export class ProductService {
         .get()
     ).docs.map((val) => val.data());
 
-    const allTag = (
-      await this.firebase.firestore.collection('tags').get()
-    ).docs.map((val) => ({ _id: val.id, name: val.data().name }));
-
-    const allCategory = (
-      await this.firebase.firestore.collection('categories').get()
-    ).docs.map((val) => ({ _id: val.id, name: val.data().name }));
+    const allTag = await this.tagService.index();
+    const allCategory = await this.categoryService.index();
 
     allProduct = allProduct.map((data) => ({
       ...data,
