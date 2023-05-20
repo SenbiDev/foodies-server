@@ -1,16 +1,25 @@
 import { Controller, Get, Post, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { QueryDTO } from './queryDto';
+import { GetAllProductQueryParam } from './queryParam/getAllProductQueryParam';
 
 @Controller('api')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get('/products')
-  async getAllProduct(@Query() queryParam: QueryDTO) {
-    const { query, limit = 9, page = 1, category = '', tags } = queryParam;
+  async getAllProduct(
+    @Query() getAllProductQueryParam: GetAllProductQueryParam,
+  ) {
+    const {
+      q,
+      limit = 9,
+      page = 1,
+      category = '',
+      tags,
+    } = getAllProductQueryParam;
+
     return await this.productService.index({
-      query,
+      q,
       limit,
       page,
       category,
@@ -20,7 +29,6 @@ export class ProductController {
 
   @Post('/products')
   async createProduct() {
-    // return await this.productService.create();
-    await this.productService.create();
+    return await this.productService.create();
   }
 }

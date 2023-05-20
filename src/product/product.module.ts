@@ -8,5 +8,6 @@ import { TagModule } from '../tag/tag.module';
   imports: [CategoryModule, TagModule],
   providers: [ProductService],
   controllers: [ProductController],
+  exports: [ProductService],
 })
 export class ProductModule {}

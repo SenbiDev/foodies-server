@@ -2,9 +2,16 @@ import { Module } from '@nestjs/common';
 import { FirebaseModule } from 'nestjs-firebase';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CounterModule } from './counter/counter.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { DeliveryAddressModule } from './deliveryAddress/deliveryAddress.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { TagModule } from './tag/tag.module';
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
+import { InvoiceModule } from './invoice/invoice.module';
 
 @Module({
   imports: [
@@ -17,9 +24,16 @@ import { TagModule } from './tag/tag.module';
           'firebase-adminsdk-gytta@foodies-firebase-20f8c.iam.gserviceaccount.com',
       },
     }),
+    CounterModule,
+    UserModule,
+    AuthModule,
+    DeliveryAddressModule,
     ProductModule,
     CategoryModule,
     TagModule,
+    CartModule,
+    OrderModule,
+    InvoiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

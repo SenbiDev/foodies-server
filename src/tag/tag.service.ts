@@ -8,7 +8,7 @@ export class TagService {
   async index() {
     const allTag = (
       await this.firebase.firestore.collection('tags').orderBy('tagId').get()
-    ).docs.map((val) => ({ _id: val.id, name: val.data().name }));
+    ).docs.map((tag) => ({ _id: tag.id, name: tag.data().name }));
 
     return await allTag;
   }

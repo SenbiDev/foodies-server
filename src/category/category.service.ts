@@ -13,7 +13,10 @@ export class CategoryService {
         .collection('categories')
         .orderBy('categoryId')
         .get()
-    ).docs.map((val) => ({ _id: val.id, name: val.data().name }));
+    ).docs.map((category) => ({
+      _id: category.id,
+      name: category.data().name,
+    }));
 
     return allCategory;
   }

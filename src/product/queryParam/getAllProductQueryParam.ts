@@ -1,5 +1,5 @@
-export interface QueryDTO {
-  query: string;
+export interface GetAllProductQueryParam {
+  q: string;
   limit: number;
   page: number;
   category: string;
