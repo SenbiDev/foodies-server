@@ -20,7 +20,7 @@ async function bootstrap() {
   //   methods : ['GET','POST','PUT','DELETE'],
   // });
 
-  app.enableCors({ origin: '*' });
+  app.enableCors();
 
   await app.listen(3000);
 }
