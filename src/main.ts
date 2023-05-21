@@ -12,12 +12,12 @@ async function bootstrap() {
     next();
   });
 
-  app.enableCors({
-    allowedHeaders: '*',
-    origin : '*',
-    credentials: true,
-    methods : ['GET','POST','PUT','DELETE'],
-  });
+  // app.enableCors({
+  //   allowedHeaders: '*',
+  //   origin : '*',
+  //   credentials: true,
+  //   methods : ['GET','POST','PUT','DELETE'],
+  // });
 
   await app.listen(3000);
 }
