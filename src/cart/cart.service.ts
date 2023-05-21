@@ -10,32 +10,34 @@ export class CartService {
   async index({ user }) {
     let cartItems = await Promise.all(
       (
-        await this.firebase.firestore.collection('cartItems').get()
-      ).docs
-        .map(async (cartItem) => {
-          const [productCollection, productId] =
-            cartItem.data()?.product?._path?.segments;
+        await this.firebase.firestore
+          .collection('cartItems')
+          .orderBy('cartId')
+          .get()
+      ).docs.map(async (cartItem) => {
+        const [productCollection, productId] =
+          cartItem.data()?.product?._path?.segments;
 
-          let product = (
-            await this.firebase.firestore
-              .doc(`${productCollection}/${productId}`)
-              .get()
-          ).data();
+        let product = (
+          await this.firebase.firestore
+            .doc(`${productCollection}/${productId}`)
+            .get()
+        ).data();
 
-          product = {
-            _id: productId,
-            ...product,
-            category: product?.category?._path?.segments[1],
-            tags: product?.tags?.map((tag) => tag?._path?.segments[1]),
-          };
+        product = {
+          _id: productId,
+          ...product,
+          category: product?.category?._path?.segments[1],
+          tags: product?.tags?.map((tag) => tag?._path?.segments[1]),
+        };
 
-          return {
-            ...cartItem.data(),
-            product,
-            user: cartItem.data().user?._path?.segments[1],
-          };
-        })
-        .reverse(),
+        return {
+          _id: cartItem.id,
+          ...cartItem.data(),
+          product,
+          user: cartItem.data().user?._path?.segments[1],
+        };
+      }),
     );
 
     cartItems = cartItems.filter((cartItem) => cartItem.user === user._id);
@@ -74,22 +76,33 @@ export class CartService {
     // );
 
     // DELETE ALL DOCUMENT WITH FILTER AND REFERENCE
+    await this.delete({ userRef });
+
+    const newCartItems = await Promise.all(
+      cartItems.map(
+        async ({ product, image_url, name, price, qty, user }, index) =>
+          await this.firebase.firestore.collection('cartItems').add({
+            cartId: index + 1,
+            product,
+            image_url,
+            name,
+            price,
+            qty,
+            user,
+          }),
+      ),
+    );
+
+    return newCartItems;
+  }
+
+  async delete({ userRef }) {
+    // DELETE ALL DOCUMENT WITH FILTER AND REFERENCE
     (
       await this.firebase.firestore
         .collection('cartItems')
         .where('user', '==', userRef)
         .get()
     ).docs.map((cartItem) => cartItem.ref.delete());
-
-    const newCartItems = await Promise.all(
-      cartItems.map(
-        async ({ product, image_url, name, price, qty, user }) =>
-          await this.firebase.firestore
-            .collection('cartItems')
-            .add({ product, image_url, name, price, qty, user }),
-      ),
-    );
-
-    return newCartItems;
   }
 }

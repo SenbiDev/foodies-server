@@ -18,7 +18,9 @@ export class DeliveryAddressService {
       (address) => address.user === user._id,
     );
 
-    return deliveryAddresses;
+    return {
+      data: deliveryAddresses,
+    };
   }
 
   async show({ addressId }) {
@@ -36,7 +38,7 @@ export class DeliveryAddressService {
     detail,
     userRef,
   }) {
-    return await this.firebase.firestore.collection('deliveryAddresses').add({
+    await this.firebase.firestore.collection('deliveryAddresses').add({
       nama,
       provinsi,
       kabupaten,
@@ -45,5 +47,15 @@ export class DeliveryAddressService {
       detail,
       user: userRef,
     });
+
+    return {
+      nama,
+      provinsi,
+      kabupaten,
+      kecamatan,
+      kelurahan,
+      detail,
+      user: userRef,
+    };
   }
 }

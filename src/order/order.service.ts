@@ -14,10 +14,13 @@ export class OrderService {
     private invoiceService: InvoiceService,
   ) {}
 
-  async index() {
-    return await Promise.all(
+  async index({ user }) {
+    let allOrder = await Promise.all(
       (
-        await this.firebase.firestore.collection('orders').get()
+        await this.firebase.firestore
+          .collection('orders')
+          .orderBy('order_number')
+          .get()
       ).docs.map(async (order) => {
         const orderItemsSegments = order
           .data()
@@ -42,6 +45,12 @@ export class OrderService {
         };
       }),
     );
+
+    allOrder = allOrder.filter((order) => order.user === user._id);
+
+    return {
+      data: allOrder,
+    };
   }
 
   async create({ delivery_fee, delivery_address, user, userRef }) {
@@ -60,7 +69,7 @@ export class OrderService {
 
     const order = {
       status: 'waiting_payment',
-      delivery_fee,
+      delivery_fee: parseInt(delivery_fee, 10),
       delivery_address: {
         provinsi: address.provinsi,
         kabupaten: address.kabupaten,
@@ -95,7 +104,7 @@ export class OrderService {
       }),
     );
 
-    const orderUpdated = await this.firebase.firestore
+    await this.firebase.firestore
       .doc(orderCreatedPath)
       .update({ order_items: orderItems });
 
@@ -116,8 +125,11 @@ export class OrderService {
       delivery_address: address,
     };
 
-    this.invoiceService.create({ invoice });
+    await this.invoiceService.create({ invoice });
+    await this.cartService.delete({ userRef });
 
-    return orderUpdated;
+    return {
+      _id: orderCreatedId,
+    };
   }
 }

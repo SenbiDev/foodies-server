@@ -16,8 +16,10 @@ export class OrderController {
 
   @UseGuards(AuthGuard)
   @Get('/orders')
-  async getAllOrder() {
-    return await this.orderService.index();
+  async getAllOrder(@Request() req) {
+    const user = req.user;
+
+    return await this.orderService.index({ user });
   }
 
   @UseGuards(AuthGuard)

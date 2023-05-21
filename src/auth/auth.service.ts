@@ -57,7 +57,7 @@ export class AuthService {
     await this.userService.updateUser(user._id, { token: [token] });
 
     return {
-      access_token: token,
+      token,
     };
   }
 
