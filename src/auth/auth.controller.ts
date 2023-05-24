@@ -14,6 +14,7 @@ import {
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { Register } from './decorator/register.decorator';
+import { Me } from './decorator/me.decorator';
 import { LogoutInterceptor } from './interceptor/logout.interceptor';
 import { AuthDTO } from './dto/authDTO';
 
@@ -39,8 +40,8 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('me')
-  getProfile(@Request() req) {
-    return req.user;
+  getProfile(@Me() me) {
+    return me;
   }
 
   @UseInterceptors(LogoutInterceptor)
