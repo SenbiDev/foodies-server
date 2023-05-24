@@ -5,11 +5,14 @@ import {
   Get,
   Post,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { DeliveryAddressService } from './deliveryAddress.service';
 import { CreateDeliveryAddressDTO } from './dto/createDeliveryAddressDTO';
 
+@UsePipes(new ValidationPipe({ stopAtFirstError: true, transform: true }))
 @Controller('api')
 export class DeliveryAddressController {
   constructor(

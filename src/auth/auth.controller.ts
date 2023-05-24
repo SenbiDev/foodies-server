@@ -7,11 +7,14 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { AuthDTO } from './dto/authDTO';
 
+@UsePipes(new ValidationPipe({ stopAtFirstError: true, transform: true }))
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

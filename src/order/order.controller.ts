@@ -5,11 +5,14 @@ import {
   Get,
   Post,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { OrderService } from './order.service';
 import { CreateOrderDTO } from './dto/createOrderDTO';
 
+@UsePipes(new ValidationPipe({ stopAtFirstError: true, transform: true }))
 @Controller('api')
 export class OrderController {
   constructor(private orderService: OrderService) {}

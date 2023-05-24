@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Controller, Get, Post, DefaultValuePipe, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
+import { ParseIntPipe } from 'pipe/parse-int.pipe';
 import { GetAllProductQueryParam } from './queryParam/getAllProductQueryParam';
 
 @Controller('api')
@@ -8,15 +9,11 @@ export class ProductController {
 
   @Get('/products')
   async getAllProduct(
+    @Query('limit', new DefaultValuePipe(9), new ParseIntPipe()) limit: number,
+    @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
     @Query() getAllProductQueryParam: GetAllProductQueryParam,
   ) {
-    const {
-      q,
-      limit = 9,
-      page = 1,
-      category = '',
-      tags,
-    } = getAllProductQueryParam;
+    const { q, category = '', tags } = getAllProductQueryParam;
 
     return await this.productService.index({
       q,

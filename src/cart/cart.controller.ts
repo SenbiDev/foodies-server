@@ -1,8 +1,18 @@
-import { Request, Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import {
+  Request,
+  Body,
+  Controller,
+  Get,
+  Put,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CartService } from './cart.service';
 import { PutCartItemDTO } from './dto/putCartItemDTO';
 
+@UsePipes(new ValidationPipe({ stopAtFirstError: true, transform: true }))
 @Controller('api')
 export class CartController {
   constructor(private readonly cartService: CartService) {}

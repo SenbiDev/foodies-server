@@ -46,8 +46,8 @@ export class ProductService {
     const queryParam = q ?? '';
     const categoryParam = category;
     const tagsParam = tags;
-    const limitParam = parseInt(limit, 10) * 1;
-    const offsetParam = (parseInt(page, 10) - 1) * limitParam;
+    const limitParam = limit * 1;
+    const offsetParam = (page - 1) * limitParam;
     // console.log('OFFSET PARAM:', offsetParam);
 
     // console.log('LIST:', query, limit, parseInt(page, 10));
@@ -103,7 +103,7 @@ export class ProductService {
             return endResult;
           });
 
-    const length = limitParam * parseInt(page, 10) ?? allProduct.length;
+    const length = limitParam * page ?? allProduct.length;
     // console.log('LENGTH:', length);
 
     const products = [];
@@ -123,7 +123,7 @@ export class ProductService {
     return {
       data: products.filter((product) => product !== undefined),
       totalPages: Math.ceil(allProduct.length / limit),
-      currentPage: parseInt(page),
+      currentPage: page,
     };
   }
 
