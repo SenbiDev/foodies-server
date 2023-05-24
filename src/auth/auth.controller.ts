@@ -44,6 +44,7 @@ export class AuthController {
     return me;
   }
 
+  @HttpCode(HttpStatus.OK)
   @UseInterceptors(LogoutInterceptor)
   @UseGuards(AuthGuard)
   @Post('logout')
