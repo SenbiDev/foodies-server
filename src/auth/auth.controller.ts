@@ -9,10 +9,12 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { Register } from './decorator/register.decorator';
+import { LogoutInterceptor } from './interceptor/logout.interceptor';
 import { AuthDTO } from './dto/authDTO';
 
 @UsePipes(new ValidationPipe({ stopAtFirstError: true, transform: true }))
@@ -41,11 +43,12 @@ export class AuthController {
     return req.user;
   }
 
-  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(LogoutInterceptor)
   @UseGuards(AuthGuard)
   @Post('logout')
   async logout(@Request() req) {
     const user = req.user;
+
     await this.authService.logout({ user });
   }
 }

@@ -1,4 +1,3 @@
-import { ConflictException } from '@nestjs/common';
 import { FirebaseAdmin, InjectFirebaseAdmin } from 'nestjs-firebase';
 import { CounterService } from 'src/counter/counter.service';
 
