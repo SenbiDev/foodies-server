@@ -8,13 +8,7 @@ import { TagModule } from '../tag/tag.module';
 
 @Module({
   imports: [CategoryModule, TagModule],
-  providers: [
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe,
-    },
-    ProductService
-  ],
+  providers: [ProductService, ParseIntPipe],
   controllers: [ProductController],
   exports: [ProductService],
 })
