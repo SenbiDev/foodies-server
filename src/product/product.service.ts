@@ -43,7 +43,7 @@ export class ProductService {
         ?.flat(),
     }));
 
-    const queryParam = q ?? '';
+    const queryParam = q;
     const categoryParam = category;
     const tagsParam = tags;
     const limitParam = limit * 1;

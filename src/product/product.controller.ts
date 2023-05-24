@@ -13,7 +13,7 @@ export class ProductController {
     @Query('page', new DefaultValuePipe(1), new ParseIntPipe()) page: number,
     @Query() getAllProductQueryParam: GetAllProductQueryParam,
   ) {
-    const { q, category = '', tags } = getAllProductQueryParam;
+    const { q = '', category = '', tags } = getAllProductQueryParam;
 
     return await this.productService.index({
       q,
