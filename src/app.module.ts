@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { FirebaseModule } from 'nestjs-firebase';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ParseIntPipe } from 'pipe/parse-int.pipe';
 import { CounterModule } from './counter/counter.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
@@ -39,6 +38,6 @@ import { InvoiceModule } from './invoice/invoice.module';
     InvoiceModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ParseIntPipe],
+  providers: [AppService],
 })
 export class AppModule {}
