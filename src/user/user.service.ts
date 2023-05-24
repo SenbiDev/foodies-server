@@ -1,13 +1,17 @@
+import { ConflictException } from '@nestjs/common';
 import { FirebaseAdmin, InjectFirebaseAdmin } from 'nestjs-firebase';
+import { CounterService } from 'src/counter/counter.service';
 
 export class UserService {
   constructor(
     @InjectFirebaseAdmin() private readonly firebase: FirebaseAdmin,
+    private counterService: CounterService,
   ) {}
 
   async createUser({ newUser }) {
-    await this.firebase.firestore.collection('users').add(newUser);
-
+    const customer_id = await this.counterService.getCustomerId();
+    await this.firebase.firestore.collection('users').add({ customer_id, ...newUser });
+    
     return newUser;
   }
 
@@ -15,7 +19,7 @@ export class UserService {
     await this.firebase.firestore.doc(`users/${userId}`).update(field);
   }
 
-  async findUserByEmail(email) {
+  async findUserByEmail(email: string) {
     return (
       await this.firebase.firestore
         .collection('users')

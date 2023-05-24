@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { Register } from './decorator/register.decorator';
 import { AuthDTO } from './dto/authDTO';
 
 @UsePipes(new ValidationPipe({ stopAtFirstError: true, transform: true }))
@@ -20,16 +21,18 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register')
-  async register(@Body() authDTO: AuthDTO) {
+  async register(@Register() authDTO: AuthDTO) {
     const { full_name, email, password } = authDTO;
+    
     return await this.authService.register({ full_name, email, password });
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() authDTO: Omit<AuthDTO, 'full_name'>) {
-    const { email, password } = authDTO;
-    return await this.authService.login({ email, password });
+    const { email } = authDTO;
+
+    return await this.authService.login({ email });
   }
 
   @UseGuards(AuthGuard)
