@@ -1,6 +1,6 @@
 import { Controller, Get, Post, DefaultValuePipe, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ParseIntPipe } from 'pipe/parse-int.pipe';
+import { ParseIntPipe } from 'pipe/parse-int';
 import { GetAllProductQueryParam } from './queryParam/getAllProductQueryParam';
 
 @Controller('api')
