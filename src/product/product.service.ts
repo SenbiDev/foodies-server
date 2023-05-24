@@ -48,9 +48,6 @@ export class ProductService {
     const tagsParam = tags;
     const limitParam = limit * 1;
     const offsetParam = (page - 1) * limitParam;
-    // console.log('OFFSET PARAM:', offsetParam);
-
-    // console.log('LIST:', query, limit, parseInt(page, 10));
 
     allProduct = allProduct.filter((value) =>
       value?.name?.match(new RegExp(`\w*${queryParam}\w*`, 'i')),
@@ -62,63 +59,43 @@ export class ProductService {
       tagsParam === undefined || tagsParam?.length === 0
         ? allProduct
         : allProduct.filter((value) => {
-            // console.log(
-            //   `START------------------${value?.name}----------------------START`,
-            // );
-
             const mapResult = value?.tags?.map((productTAG) => {
               const result1 = tagsParam?.map((tag) => productTAG?.name === tag);
-              // console.log('RESULT OF TAG1:', result1);
 
               const result2AfterRemoveDuplicate = new Set(result1);
-              // console.log('RESULT OF TAG2:', result2AfterRemoveDuplicate);
 
               const result3AfterConvertToAray = Array.from([
                 ...result2AfterRemoveDuplicate,
               ]);
-              // console.log('RESULT OF TAG3:', result3AfterConvertToAray);
 
               const result4AfterFilterOnlyTrue =
                 result3AfterConvertToAray.includes(true);
-              // console.log('RESULT OF TAG4:', result4AfterFilterOnlyTrue);
 
               return result4AfterFilterOnlyTrue;
             });
 
-            // console.log(
-            //   `END--------------------${value?.name}------------------------END`,
-            // );
-
             const result1AfterRemoveDuplicate = new Set(mapResult);
-            // console.log('YY:', result1AfterRemoveDuplicate);
 
             const result2AfterConvertToAray = Array.from([
               ...result1AfterRemoveDuplicate,
             ]);
-            // console.log('XX:', result2AfterConvertToAray);
 
             const endResult = result2AfterConvertToAray.includes(true);
-            // console.log('FINAL:', endResult);
 
             return endResult;
           });
 
     const length = limitParam * page ?? allProduct.length;
-    // console.log('LENGTH:', length);
 
     const products = [];
 
-    for (let x = 0; x < length; x++) {
-      if (x < offsetParam) {
+    for (let i = 0; i < length; i++) {
+      if (i < offsetParam) {
         continue;
       } else {
-        // console.log(allProduct[x]);
-        products.push(allProduct[x]);
+        products.push(allProduct[i]);
       }
-      // console.log('LOOP: ', x);
     }
-
-    // console.log('TAGS PARAM:', tagsParam);
 
     return {
       data: products.filter((product) => product !== undefined),

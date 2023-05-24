@@ -10,6 +10,6 @@ export class TagService {
       await this.firebase.firestore.collection('tags').orderBy('tagId').get()
     ).docs.map((tag) => ({ _id: tag.id, name: tag.data().name }));
 
-    return await allTag;
+    return allTag;
   }
 }
